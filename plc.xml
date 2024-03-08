@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0201" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ns1="http://www.plcopen.org/xml/tc6_0201">
   <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2024-03-06T12:20:15"/>
-  <contentHeader name="Unnamed" modificationDateTime="2024-03-08T10:19:13">
+  <contentHeader name="Unnamed" modificationDateTime="2024-03-08T10:24:45">
     <coordinateInfo>
       <fbd>
         <scaling x="10" y="10"/>
@@ -111,6 +111,9 @@
               <type>
                 <BOOL/>
               </type>
+              <initialValue>
+                <simpleValue value="true"/>
+              </initialValue>
               <documentation>
                 <xhtml:p><![CDATA[Defined in the Res0 resource]]></xhtml:p>
               </documentation>
@@ -343,17 +346,19 @@
                 <relPosition x="0" y="20"/>
                 <connection refLocalId="4">
                   <position x="250" y="120"/>
+                  <position x="240" y="120"/>
+                  <position x="240" y="120"/>
                   <position x="220" y="120"/>
                 </connection>
               </connectionPointIn>
               <expression>global_status.BART_Hand</expression>
             </outVariable>
-            <inVariable localId="4" executionOrderId="0" width="130" height="30" negated="false">
-              <position x="90" y="110"/>
+            <inVariable localId="4" executionOrderId="0" width="160" height="30" negated="false">
+              <position x="60" y="110"/>
               <connectionPointOut>
-                <relPosition x="130" y="10"/>
+                <relPosition x="160" y="10"/>
               </connectionPointOut>
-              <expression>FA_Start_T_HMI</expression>
+              <expression>FA_BART_Hand_T_HMI</expression>
             </inVariable>
             <inVariable localId="9" executionOrderId="0" width="200" height="30" negated="false">
               <position x="480" y="100"/>
