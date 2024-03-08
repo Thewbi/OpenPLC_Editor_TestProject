@@ -44,11 +44,23 @@ __end:
 void AKT_5_2_MV_init__(AKT_5_2_MV *data__, BOOL retain) {
   __INIT_VAR(data__->EN,__BOOL_LITERAL(TRUE),retain)
   __INIT_VAR(data__->ENO,__BOOL_LITERAL(TRUE),retain)
+  {
+    static const S_FA_STATUS temp = {__BOOL_LITERAL(TRUE),__BOOL_LITERAL(FALSE),__BOOL_LITERAL(FALSE),__BOOL_LITERAL(FALSE),__BOOL_LITERAL(FALSE),__BOOL_LITERAL(FALSE)};
+    __SET_VAR(data__->,STATUS,,temp);
+  }
   __INIT_VAR(data__->HAND_P1,__BOOL_LITERAL(FALSE),retain)
   __INIT_VAR(data__->HAND_P2,__BOOL_LITERAL(FALSE),retain)
   SR_init__(&data__->SR0,retain);
   __INIT_VAR(data__->S_MV_P2_FF,__BOOL_LITERAL(FALSE),retain)
   __INIT_VAR(data__->DEBUGBOOLEAN,__BOOL_LITERAL(FALSE),retain)
+  TON_init__(&data__->TON0,retain);
+  __INIT_VAR(data__->CONST_T_LAUFZEIT_P2,__time_to_timespec(1, 0, 10, 0, 0, 0),retain)
+  __INIT_VAR(data__->SEN_P1,__BOOL_LITERAL(FALSE),retain)
+  __INIT_VAR(data__->SEN_P2,__BOOL_LITERAL(FALSE),retain)
+  __INIT_VAR(data__->_TMP_AND6_OUT,__BOOL_LITERAL(FALSE),retain)
+  __INIT_VAR(data__->_TMP_AND9_OUT,__BOOL_LITERAL(FALSE),retain)
+  __INIT_VAR(data__->_TMP_NOT17_OUT,__BOOL_LITERAL(FALSE),retain)
+  __INIT_VAR(data__->_TMP_AND15_OUT,__BOOL_LITERAL(FALSE),retain)
 }
 
 // Code part
@@ -63,10 +75,33 @@ void AKT_5_2_MV_body__(AKT_5_2_MV *data__) {
   }
   // Initialise TEMP variables
 
-  __SET_VAR(data__->SR0.,S1,,__GET_VAR(data__->HAND_P2,));
-  __SET_VAR(data__->SR0.,R,,__GET_VAR(data__->HAND_P1,));
+  __SET_VAR(data__->,_TMP_AND6_OUT,,AND__BOOL__BOOL(
+    (BOOL)__BOOL_LITERAL(TRUE),
+    NULL,
+    (UINT)2,
+    (BOOL)__GET_VAR(data__->STATUS,.BART_HAND),
+    (BOOL)__GET_VAR(data__->HAND_P2,)));
+  __SET_VAR(data__->,_TMP_AND9_OUT,,AND__BOOL__BOOL(
+    (BOOL)__BOOL_LITERAL(TRUE),
+    NULL,
+    (UINT)2,
+    (BOOL)__GET_VAR(data__->STATUS,.BART_HAND),
+    (BOOL)__GET_VAR(data__->HAND_P1,)));
+  __SET_VAR(data__->SR0.,S1,,__GET_VAR(data__->_TMP_AND6_OUT,));
+  __SET_VAR(data__->SR0.,R,,__GET_VAR(data__->_TMP_AND9_OUT,));
   SR_body__(&data__->SR0);
   __SET_VAR(data__->,S_MV_P2_FF,,__GET_VAR(data__->SR0.Q1,));
+  __SET_VAR(data__->,_TMP_NOT17_OUT,,!(__GET_VAR(data__->SEN_P2,)));
+  __SET_VAR(data__->,_TMP_AND15_OUT,,AND__BOOL__BOOL(
+    (BOOL)__BOOL_LITERAL(TRUE),
+    NULL,
+    (UINT)2,
+    (BOOL)__GET_VAR(data__->_TMP_NOT17_OUT,),
+    (BOOL)__GET_VAR(data__->HAND_P2,)));
+  __SET_VAR(data__->TON0.,IN,,__GET_VAR(data__->_TMP_AND15_OUT,));
+  __SET_VAR(data__->TON0.,PT,,__GET_VAR(data__->CONST_T_LAUFZEIT_P2,));
+  TON_body__(&data__->TON0);
+  __SET_VAR(data__->,DEBUGBOOLEAN,,__GET_VAR(data__->TON0.Q,));
 
   goto __end;
 
@@ -137,6 +172,8 @@ void PROGRAM0_POU_init__(PROGRAM0_POU *data__, BOOL retain) {
   __INIT_VAR(data__->ZYL1_T_P1_HMI,__BOOL_LITERAL(FALSE),retain)
   __INIT_VAR(data__->ZYL1_T_P2_HMI,__BOOL_LITERAL(FALSE),retain)
   __INIT_VAR(data__->S_MV_P2_FF,__BOOL_LITERAL(FALSE),retain)
+  __INIT_VAR(data__->SEN_P1_T_HMI,__BOOL_LITERAL(TRUE),retain)
+  __INIT_VAR(data__->SEN_P2_T_HMI,__BOOL_LITERAL(FALSE),retain)
   __INIT_VAR(data__->_TMP_FA_SERV1_OUT,__BOOL_LITERAL(FALSE),retain)
 }
 
@@ -156,8 +193,11 @@ void PROGRAM0_POU_body__(PROGRAM0_POU *data__) {
     (BOOL)__GET_VAR(data__->FA_STOER_QUIT_T_HMI,),
     (BOOL)__GET_VAR(data__->FA_NOTHALT_T_HMI,)));
   __SET_VAR(data__->,DEBUGBOOLEAN,,__GET_VAR(data__->_TMP_FA_SERV1_OUT,));
+  __SET_VAR(data__->AKT_5_2_MV0.,STATUS,,__GET_EXTERNAL(data__->GLOBAL_STATUS,));
   __SET_VAR(data__->AKT_5_2_MV0.,HAND_P1,,__GET_VAR(data__->ZYL1_T_P1_HMI,));
   __SET_VAR(data__->AKT_5_2_MV0.,HAND_P2,,__GET_VAR(data__->ZYL1_T_P2_HMI,));
+  __SET_VAR(data__->AKT_5_2_MV0.,SEN_P1,,__GET_VAR(data__->SEN_P1_T_HMI,));
+  __SET_VAR(data__->AKT_5_2_MV0.,SEN_P2,,__GET_VAR(data__->SEN_P2_T_HMI,));
   AKT_5_2_MV_body__(&data__->AKT_5_2_MV0);
   __SET_VAR(data__->,S_MV_P2_FF,,__GET_VAR(data__->AKT_5_2_MV0.S_MV_P2_FF,));
 
